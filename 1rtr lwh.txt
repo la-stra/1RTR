@@ -1,0 +1,161 @@
+  Documentation Technique - Projet AdopteUnChien
+
+________________________________________
+1. Présentation du projet
+1.1 Objectifs
+Le projet AdopteUnChien vise à mettre en place une infrastructure web complète comprenant :
+•	Un serveur web Apache2
+•	Un serveur de base de données MySQL
+•	Une interface d'administration phpMyAdmin
+1.2 Contraintes techniques
+•	Port d'écoute : 8080
+•	Domaine : adopteunchien.fr
+•	Résolution DNS : Configuration locale via /etc/hosts
+•	Logs : Traçabilité des connexions via access.log
+1.3 Livrables attendus
+•	Dossier ZIP contenant : 
+o	Captures d'écran de chaque étape
+o	Documentation explicative des captures
+o	Fichiers de configuration
+________________________________________
+2. Architecture technique
+2.1 Stack technologique
+┌─────────────────────────────────────┐
+│           Navigateur Web            │
+└─────────────┬───────────────────────┘
+              │ HTTP:8080
+┌─────────────▼───────────────────────┐
+│          Apache2 Web Server        │
+│  - Virtual Host: adopteunchien.fr   │
+│  - Port: 8080                      │
+│  - Document Root: /var/www/adopte.. │
+└─────────────┬───────────────────────┘
+              │
+┌─────────────▼───────────────────────┐
+│            PHP Engine               │
+│  - Module Apache: mod_php           │
+│  - Extensions: mysql                │
+└─────────────┬───────────────────────┘
+              │
+┌─────────────▼───────────────────────┐
+│          MySQL Server               │
+│  - Port: 3306 (défaut)             │
+│  - Interface: phpMyAdmin            │
+└─────────────────────────────────────┘
+2.2 Flux de données
+1.	Requête utilisateur → Navigateur
+2.	Résolution DNS → /etc/hosts (127.0.0.1)
+3.	Requête HTTP → Apache2:8080
+4.	Traitement PHP → Moteur PHP
+5.	Requête BDD → MySQL Server
+6.	Réponse → Utilisateur
+________________________________________
+3. Prérequis
+3.1 Système d'exploitation
+•	Ubuntu 20.04 LTS ou supérieur
+•	Debian 10 ou supérieur
+•	Droits administrateur (sudo)
+3.2 Ressources système
+•	RAM : Minimum 2GB
+•	Espace disque : Minimum 5GB libres
+•	CPU : 1 cœur minimum
+3.3 Réseau
+•	Accès Internet pour le téléchargement des paquets
+•	Ports 80, 8080, 3306 disponibles
+4. Installation et configuration
+4.1 Préparation du système
+4.1.1 Mise à jour des paquets
+sudo apt update && sudo apt upgrade -y
+4.1.2 Installation des outils de base
+sudo apt install curl wget vim net-tools -y
+4.2 Installation d'Apache2
+4.2.1 Installation du paquet
+sudo apt install apache2 -y
+4.2.2 Configuration des services
+sudo systemctl enable apache2
+sudo systemctl start apache2
+4.2.3 Vérification du firewall
+sudo ufw allow 'Apache Full'
+sudo ufw allow 8080
+4.3 Installation et configuration de PHP
+4.3.1 Installation des paquets PHP
+
+sudo apt install php libapache2-mod-php php-mysql php-cli php-curl php-gd php-mbstring php-xml -y
+4.3.2 Configuration Apache pour PHP
+sudo a2enmod php7.4  # ou version installée
+sudo systemctl restart apache2
+4.3.3 Test de PHP
+Créer le fichier /var/www/html/info.php :
+<?php
+phpinfo();
+?>
+4.4 Installation et configuration de MySQL	
+
+4.4.1 Installation du serveur MySQL
+sudo apt install mysql-server -y
+4.4.2 Configuration sécurisée
+sudo mysql_secure_installation
+Répondre aux questions :
+•	Mot de passe root : Choisir un mot de passe fort
+•	Supprimer utilisateurs anonymes : Y
+•	Interdire connexion root distante : Y
+•	Supprimer base test : Y
+•	Recharger tables privilèges : Y
+4.4.3 Création d'un utilisateur pour phpMyAdmin
+sudo mysql -u root -p
+CREATE USER 'phpmyadmin'@'localhost' IDENTIFIED BY 'mot_de_passe_fort';
+GRANT ALL PRIVILEGES ON *.* TO 'phpmyadmin'@'localhost' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+EXIT;
+4.5 Installation et configuration de phpMyAdmin
+4.5.1 Installation du paquet
+sudo apt install phpmyadmin -y
+Lors de l'installation :
+•	Serveur web : Sélectionner Apache2
+•	Configuration automatique : Oui
+•	Mot de passe : Définir un mot de passe pour l'utilisateur phpmyadmin
+4.5.2 Configuration Apache
+sudo ln -s /usr/share/phpmyadmin /var/www/html/phpmyadmin
+sudo systemctl restart apache2
+4.6 Configuration du Virtual Host
+4.6.1 Configuration des ports Apache
+Éditer /etc/apache2/ports.conf :
+Listen 80
+Listen 8080
+<IfModule ssl_module>
+    Listen 443
+</IfModule>
+
+<IfModule mod_gnutls.c>
+    Listen 443
+</IfModule>
+4.6.2 Création du Virtual Host
+Créer /etc/apache2/sites-available/adopteunchien.conf :
+<VirtualHost *:8080>
+    ServerName adopteunchien.fr
+    DocumentRoot /var/www/adopteunchien
+    
+    <Directory /var/www/adopteunchien>
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+    
+    # Logs personnalisés
+    ErrorLog ${APACHE_LOG_DIR}/adopteunchien_error.log
+    CustomLog ${APACHE_LOG_DIR}/adopteunchien_access.log combined
+    
+    # Configuration PHP
+    <FilesMatch \.php$>
+        SetHandler application/x-httpd-php
+    </FilesMatch>
+</VirtualHost>
+4.6.3 Activation du site
+sudo a2ensite adopteunchien.conf
+sudo systemctl reload apache2
+4.7 Configuration DNS locale
+4.7.1 Modification du fichier hosts
+Éditer /etc/hosts et ajouter :
+127.0.0.1    localhost
+127.0.0.1    adopteunchien.fr
+
