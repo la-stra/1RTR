@@ -1,0 +1,430 @@
+/* Variables CSS pour les couleurs */
+:root {
+    /* Light Mode */
+    --background-color-light: #f4f4f4;
+    --text-color-light: #333;
+    --header-footer-bg-light: #fff;
+    --card-bg-light: #fff;
+    --border-color-light: #ddd;
+    --button-bg-light: #007bff;
+    --button-text-light: #fff;
+    --link-color-light: #007bff;
+
+    /* Dark Mode */
+    --background-color-dark: #333;
+    --text-color-dark: #f4f4f4;
+    --header-footer-bg-dark: #222;
+    --card-bg-dark: #444;
+    --border-color-dark: #555;
+    --button-bg-dark: #6c757d;
+    --button-text-dark: #fff;
+    --link-color-dark: #add8e6; /* Light blue for links in dark mode */
+}
+
+/* Général */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    transition: background-color 0.3s, color 0.3s; /* Transition fluide pour le mode jour/nuit */
+    background-color: var(--background-color-light);
+    color: var(--text-color-light);
+}
+
+/* Dark Mode styles */
+body.dark-mode {
+    background-color: var(--background-color-dark);
+    color: var(--text-color-dark);
+}
+
+body.dark-mode header,
+body.dark-mode footer {
+    background-color: var(--header-footer-bg-dark);
+    color: var(--text-color-dark);
+    border-color: var(--border-color-dark);
+}
+
+body.dark-mode .card,
+body.dark-mode .backoffice-form {
+    background-color: var(--card-bg-dark);
+    border-color: var(--border-color-dark);
+}
+
+body.dark-mode nav a {
+    color: var(--link-color-dark);
+}
+
+body.dark-mode .button,
+body.dark-mode .dark-mode-button,
+body.dark-mode button[type="submit"] {
+    background-color: var(--button-bg-dark);
+    color: var(--button-text-dark);
+}
+
+/* Conteneur général */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header */
+header {
+    background-color: var(--header-footer-bg-light);
+    color: var(--text-color-light);
+    padding: 15px 0;
+    border-bottom: 1px solid var(--border-color-light);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* Pour le responsive */
+}
+
+.logo img {
+    height: 50px;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+nav ul li {
+    margin-left: 20px;
+}
+
+nav a {
+    text-decoration: none;
+    color: var(--text-color-light);
+    font-weight: bold;
+    padding: 5px 10px;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: var(--link-color-light);
+}
+
+.dark-mode-button {
+    background-color: var(--button-bg-light);
+    color: var(--button-text-light);
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.dark-mode-button:hover {
+    opacity: 0.9;
+}
+
+/* Main content area */
+main {
+    padding: 20px 0;
+    min-height: 70vh; /* S'assure que le contenu pousse le footer vers le bas */
+}
+
+/* Sections */
+section {
+    margin-bottom: 40px;
+    padding: 20px;
+    background-color: var(--card-bg-light);
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+section h2 {
+    color: var(--link-color-light);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Page d'Accueil */
+.intro-text {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.map-container {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.map-container iframe {
+    width: 100%;
+    max-width: 800px;
+    height: 400px;
+    border: 0;
+    border-radius: 8px;
+}
+
+.carousel {
+    display: flex;
+    overflow-x: scroll; /* Permet le défilement horizontal */
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch; /* Pour un défilement fluide sur iOS */
+    padding-bottom: 20px; /* Espace pour la barre de défilement */
+    gap: 20px; /* Espace entre les images */
+}
+
+.carousel-item {
+    flex: 0 0 auto; /* Empêche les éléments de se réduire */
+    width: 300px; /* Largeur fixe pour chaque élément du carrousel */
+    scroll-snap-align: start;
+    text-align: center;
+    background-color: var(--card-bg-light);
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 15px;
+}
+
+.carousel-item img {
+    max-width: 100%;
+    height: 200px; /* Hauteur fixe pour les images du carrousel */
+    object-fit: cover;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.carousel-item h3 {
+    margin: 0;
+    color: var(--text-color-light);
+}
+
+/* Page "En adoption" */
+.filters {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.filters label {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.filters select {
+    padding: 8px 12px;
+    border-radius: 5px;
+    border: 1px solid var(--border-color-light);
+    background-color: var(--card-bg-light);
+    color: var(--text-color-light);
+}
+
+.dog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.card {
+    background-color: var(--card-bg-light);
+    border: 1px solid var(--border-color-light);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    display: block;
+}
+
+.card-content {
+    padding: 20px;
+}
+
+.card-content h3 {
+    margin-top: 0;
+    color: var(--link-color-light);
+}
+
+.card-content p {
+    margin: 5px 0;
+    color: var(--text-color-light);
+}
+
+/* Page "L'Association" */
+.service {
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: var(--card-bg-light);
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.service h3 {
+    color: var(--link-color-light);
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.service p {
+    text-align: justify;
+}
+
+/* Backoffice */
+.backoffice-form {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: var(--card-bg-light);
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+.backoffice-form h2 {
+    text-align: center;
+    color: var(--link-color-light);
+    margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: var(--text-color-light);
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group input[type="file"] {
+    width: calc(100% - 20px); /* Ajuster la largeur en tenant compte du padding */
+    padding: 10px;
+    border: 1px solid var(--border-color-light);
+    border-radius: 5px;
+    background-color: var(--background-color-light); /* Couleur de fond pour les inputs */
+    color: var(--text-color-light);
+}
+
+.form-group input[type="file"] {
+    padding: 5px; /* Ajustement pour le type file */
+}
+
+button[type="submit"] {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background-color: var(--button-bg-light);
+    color: var(--button-text-light);
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button[type="submit"]:hover {
+    opacity: 0.9;
+}
+
+.message {
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.message.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Footer */
+footer {
+    background-color: var(--header-footer-bg-light);
+    color: var(--text-color-light);
+    text-align: center;
+    padding: 20px 0;
+    border-top: 1px solid var(--border-color-light);
+    margin-top: 40px;
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.05);
+}
+
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.footer-content p {
+    margin: 5px 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    nav ul {
+        flex-direction: column;
+        margin-top: 15px;
+    }
+
+    nav ul li {
+        margin: 5px 0;
+    }
+
+    .dark-mode-button {
+        margin-top: 15px;
+    }
+
+    .dog-grid {
+        grid-template-columns: 1fr; /* Une seule colonne sur petits écrans */
+    }
+
+    .carousel-item {
+        width: 100%; /* Les éléments du carrousel prennent toute la largeur */
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 15px;
+    }
+
+    .logo img {
+        height: 40px;
+    }
+
+    nav a {
+        font-size: 0.9em;
+        padding: 3px 5px;
+    }
+
+    h1 {
+        font-size: 1.8em;
+    }
+
+    h2 {
+        font-size: 1.5em;
+    }
+}
